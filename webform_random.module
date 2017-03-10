@@ -1,16 +1,13 @@
 <?php
-
 /**
-* @uberhacker
-*		 from @uberhacker
-*
-*		function hook_form_FORM_ID_alter(&$form, &$form_state, $form_id) {
-*		  foreach ($form as $key => $value) {
-*		    $form[$key]['#weight'] = rand(-100, 100);
-*		  }
-*		}
-*  replace `hook` with your custom module name and `FORM_ID` with the webform id.
-**/
+ * @file
+ * This module provides a checkbox on the WebformForm Form Settings page located
+ * located at /node/%/webform/configure to display the form elements randomly.
+ *
+ * Contributions by Brandon Williams (@rocketeerbkw) and Ed Reel (@uberhacker)
+ *
+ * @author Nick Landis (@BiigNiick)
+ */
 
 function webform_random_form_webform_configure_form_alter(&$form, &$form_state, $form_id) {
 	/* Random Settings */
