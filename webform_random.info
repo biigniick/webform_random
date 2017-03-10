@@ -1,0 +1,6 @@
+name = Webform Random
+description = Randomly displays form items on a webform
+core = 7.x
+package = Webform
+
+dependencies[] = webform
