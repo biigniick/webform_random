@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ *   Webform_random module uninstall hooks.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function webform_random_uninstall() {
+  db_delete('variable')->condition('name', db_like('webform_random_randomize_') . '%', 'LIKE')->execute();
+}
