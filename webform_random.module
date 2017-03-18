@@ -17,7 +17,9 @@ function webform_random_form_webform_configure_form_alter(&$form, &$form_state, 
 		'#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
 		'#title' => t('Randomize form elements'),
 		);
-	$form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
+/** MAY NOT NEED THIS
+	 $form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
+*/
 }
 function webform_random_save_submit ($form, &$form_state) {
 	variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);

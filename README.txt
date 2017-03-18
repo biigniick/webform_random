@@ -10,6 +10,13 @@ Drupal 7.x
 See https://www.drupal.org/project/webform for additional requirements.
 
 
+KNOWN ISSUES!!!
+------------
+the webforms settings page will not save properly while the module is enabled
+https://www.drupal.org/project/issues/webform_random?categories=All
+
+
+
 Installation
 ------------
 1. Copy the entire webform_random directory the Drupal sites/all/modules directory.
