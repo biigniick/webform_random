@@ -2,7 +2,7 @@
 /**
  * @file
  * This module provides a checkbox on the WebformForm Form Settings page located
- * located at /node/%/webform/configure to display the form elements randomly.
+ * located at /node/%/webform/configure to display all form elements randomly.
  *
  * Contributions by Brandon Williams (@rocketeerbkw) and Ed Reel (@uberhacker)
  *
@@ -17,9 +17,9 @@ function webform_random_form_webform_configure_form_alter(&$form, &$form_state, 
 		'#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
 		'#title' => t('Randomize form elements'),
 		);
-/** MAY NOT NEED THIS
+//  SOMETHING NOT WORKING CORRECTLY HERE
 	 $form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
-*/
+
 }
 function webform_random_save_submit ($form, &$form_state) {
 	variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
@@ -31,7 +31,7 @@ function webform_random_form_alter(&$form, &$form_state, $form_id) {
 		foreach	($form['submitted'] as $key => $value) {
 			if (is_array($value)) {
 				$form['submitted'][$key]['#weight'] = rand(-100, 100);
-			} 
+			}
 		}
 	}
 

@@ -1,5 +1,5 @@
 name = Webform Random
-description = Randomly displays form items on a webform
+description = Gives each webform a checkbox to enable random display of all webform components.
 core = 7.x
 package = Webform
 
