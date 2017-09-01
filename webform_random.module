@@ -10,31 +10,31 @@
  */
 
 function webform_random_form_webform_configure_form_alter(&$form, &$form_state, $form_id) {
-	/* Random Settings */
-	$form['random'] = array(
-		'#type' => 'checkbox',
-		'#weight' => '-100',
-		'#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
-		'#title' => t('Randomize form elements'),
-		);
+  /* Random Settings */
+  $form['random'] = array(
+  '#type' => 'checkbox',
+    '#weight' => '-100',
+    '#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
+    '#title' => t('Randomize form elements'),
+    );
 //  SOMETHING NOT WORKING CORRECTLY HERE
-	 $form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
+$form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
 
 }
 function webform_random_save_submit ($form, &$form_state) {
-	variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
+  variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
 }
 
-
+/**
+ * Implements hook_form_alter().
+ */
 function webform_random_form_alter(&$form, &$form_state, $form_id) {
-	if (substr($form_id, 0, 20) == 'webform_client_form_' ){
-		$random=variable_get('webform_random_randomize_'.$form['#node']->nid, 0 );
-
-		foreach ($form['submitted']['random_fieldset'] as $key => $value) {
-			if ($random) {
-				$form['submitted']['random_fieldset'][$key]['#weight'] = rand(-100, 100);
-			}
-		}
-	}
+  if (substr($form_id, 0, 20) == 'webform_client_form_' && variable_get('webform_random_randomize_'.$form['#node']->nid, 0 )) {
+    foreach	($form['submitted'] as $key => $value) {
+      if (is_array($value)) {
+        $form['submitted'][$key]['#weight'] = rand(-100, 100);
+      }
+    }
+  }
 }
 
