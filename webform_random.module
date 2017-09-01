@@ -27,13 +27,14 @@ function webform_random_save_submit ($form, &$form_state) {
 
 
 function webform_random_form_alter(&$form, &$form_state, $form_id) {
-	if (substr($form_id, 0, 20) == 'webform_client_form_' && variable_get('webform_random_randomize_'.$form['#node']->nid, 0 )) {
-		foreach	($form['submitted'] as $key => $value) {
-			if (is_array($value)) {
-				$form['submitted'][$key]['#weight'] = rand(-100, 100);
+	if (substr($form_id, 0, 20) == 'webform_client_form_' ){
+		$random=variable_get('webform_random_randomize_'.$form['#node']->nid, 0 );
+
+		foreach ($form['submitted']['random_fieldset'] as $key => $value) {
+			if ($random) {
+				$form['submitted']['random_fieldset'][$key]['#weight'] = rand(-100, 100);
 			}
 		}
 	}
-
 }
 
