@@ -34,9 +34,13 @@ function webform_random_save_submit ($form, &$form_state) {
  * Implements hook_form_alter().
  */
 function webform_random_form_alter(&$form, &$form_state, $form_id) {
+  // if it is a webform get the variable for that node is set
   if (substr($form_id, 0, 20) == 'webform_client_form_' && variable_get('webform_random_randomize_'.$form['#node']->nid, 0 )) {
+    // go through each item in the form
     foreach	($form['submitted'] as $key => $value) {
+      // if the $value for the item is an array
       if (is_array($value)) {
+        // change the array element of weight to a random number between -100 and 100
         $form['submitted'][$key]['#weight'] = rand(-100, 100);
       }
     }
