@@ -10,10 +10,11 @@
  */
 
 /**
- *
+ * Implements hook_form_alter().
  */
-
 function webform_random_fieldset_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
+
+// debugging
   dpm($form);
 
   /* Random Fieldset Settings */
@@ -31,10 +32,12 @@ function webform_random_fieldset_form_webform_component_edit_form_alter(&$form, 
     );
 // save the variable
 //  SOMETHING NOT WORKING CORRECTLY HERE
-// $form['actions']['submit']['#submit'][] = 'webform_random_fieldset_save_submit';
+$form['actions']['submit']['#submit'][] = 'webform_random_fieldset_save_submit';
   }
 }
-
+function webform_random_fieldset_save_submit ($form, &$form_state) {
+  variable_set('webform_random_fieldset_randomize_'.$form['cid']['#value'], $form_state['values']['random_fieldset']);
+}
 
 /**
  * Implements hook_form_alter().
