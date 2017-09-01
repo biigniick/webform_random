@@ -1,0 +1,7 @@
+name = Webform Random Fieldset
+description = Adds a random fieldset component to randomize display of all fields contained within.
+core = 7.x
+package = Webform
+version = 7.x-1.x-dev
+
+dependencies[] = webform_random

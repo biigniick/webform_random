@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Webform Random Fieldset module.
+ *
+ * Adds a random fieldset component that randomizes all fields contained within.
+ *
+ * @author Nick Landis (@BiigNiick)
+ */
+
+/**
+ *
+ * GOING IN A DIFFERENT DIRECTION
+ *
+ *
+ * Implements hook_webform_component_info
+ */
+// function webform_random_fieldset_webform_component_info() {
+
+//   $component_info = array(
+//     'random_fieldset' => array(
+//       'label' => t('Random Fieldset'),
+//       'description' => t('Random fieldsets allow you to organize multiple fields into randomized groups.'),
+//       'features' => array(
+//         'csv' => FALSE,
+//         'default_value' => FALSE,
+//         'required' => FALSE,
+//         'conditional' => FALSE,
+//         'group' => TRUE,
+//         'title_inline' => FALSE,
+//         'wrapper_classes' => FALSE,
+//       ),
+//       'file' => 'components/random_fieldset.inc',
+//     ),
+//   );
+
+//   return $component_info;
+// }
+
+
+function webform_random_fieldset_form_webform_configure_form_alter(&$form, &$form_state, $form_id) {
+  /* Random Settings */
+  $form['random'] = array(
+  '#type' => 'checkbox',
+    '#weight' => '-100',
+    '#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
+    '#title' => t('Randomize form elements'),
+    );
+//  SOMETHING NOT WORKING CORRECTLY HERE
+$form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
+
+}
+
+function webform_random_save_submit ($form, &$form_state) {
+  variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function webform_random_fieldset_form_alter(&$form, &$form_state, $form_id) {
+  if (substr($form_id, 0, 20) == 'webform_client_form_' && variable_get('webform_random_fieldset_randomize_'.$form['submitted']['fieldset']['#webform_component']->cid, 0 )) {
+    foreach ($form['submitted']['fieldset'] as $key => $value) {
+      if (is_array($value)) {
+        $form['submitted'][$key]['#weight'] = rand(-100, 100);
+      }
+    }
+  }
+}
+// function webform_random_form_alter(&$form, &$form_state, $form_id) {
+//   if (substr($form_id, 0, 20) == 'webform_client_form_' ){
+//     $random_fieldset=variable_get('webform_random_fieldset_randomize_'.$form['submitted']['fieldset']['#webform_component']->cid, 0 );
+
+//     foreach ($form['submitted']['fieldset'] as $key => $value) {
+//       if ($random_fieldset) {
+//         $form['submitted']['fieldset'][$key]['#weight'] = rand(-100, 100);
+//       }
+//     }
+//   }
+// }
