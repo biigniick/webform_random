@@ -28,14 +28,16 @@ function webform_random_fieldset_form_webform_component_edit_form_alter(&$form, 
       // label the checkbox with something that makes sense
       '#title' => t('Randomize fieldset elements'),
     );
-// save the variable and the whole form
-// saving other elements in the form is not working...
-//  SOMETHING NOT WORKING CORRECTLY HERE
-$form['actions']['submit']['#submit'][] = 'webform_random_fieldset_save_submit';
+//clicking submit calls a function
+$form['#submit'][] = 'webform_random_fieldset_save_submit';
   }
 }
-//  not sure why we need this, but it breaks even more without it...
+
+/**
+ * Implements hook_form_submit().
+ */
 function webform_random_fieldset_save_submit ($form, &$form_state) {
+  // set a variable when saving the form
   variable_set('webform_random_fieldset_randomize_'.$form['cid']['#value'], $form_state['values']['random_fieldset']);
 }
 

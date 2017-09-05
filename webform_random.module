@@ -21,12 +21,16 @@ function webform_random_form_webform_configure_form_alter(&$form, &$form_state, 
     // label the checkbox so people know what it does
     '#title' => t('Randomize top-level form elements'),
     );
-//  SOMETHING NOT WORKING CORRECTLY HERE
-$form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
+//clicking submit calls a function
+$form['#submit'][] = 'webform_random_form_submit_save';
 
 }
-// not sure if this is redundant?
-function webform_random_save_submit ($form, &$form_state) {
+
+/**
+ * Implements hook_form_submit().
+ */
+function webform_random_form_submit_save ($form, &$form_state) {
+  // set a variable when saving the form
   variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
 }
 
