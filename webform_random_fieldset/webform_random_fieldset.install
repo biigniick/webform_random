@@ -8,6 +8,6 @@
 /**
  * Implements hook_uninstall().
  */
-function webform_random_uninstall() {
+function webform_random_fieldset_uninstall() {
   db_delete('variable')->condition('name', db_like('webform_random_fieldset_randomize_') . '%', 'LIKE')->execute();
 }
