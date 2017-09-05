@@ -13,28 +13,28 @@
  * Implements hook_form_alter().
  */
 function webform_random_fieldset_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
-
-// debugging
-  dpm($form);
-
   /* Random Fieldset Settings */
-  // only on fieldset components
+  // if this component is a fieldset
   if ($form['type']['#value'] == 'fieldset') {
+    // make a random_fieldset array in $form
     $form['random_fieldset'] = array(
-      // make a checkbox
+      // it's a checkbox
     '#type' => 'checkbox',
       // at the top of the list
       '#weight' => '-100',
-      // save a variable
+      // check to see if this component has a varialbe saved for it already
+      // and reflect that setting as the default value
       '#default_value' => variable_get('webform_random_fieldset_randomize_'.$form['cid']['#value'], 0 ),
-      // label the checkbox
+      // label the checkbox with something that makes sense
       '#title' => t('Randomize fieldset elements'),
     );
-// save the variable
+// save the variable and the whole form
+// saving other elements in the form is not working...
 //  SOMETHING NOT WORKING CORRECTLY HERE
 $form['actions']['submit']['#submit'][] = 'webform_random_fieldset_save_submit';
   }
 }
+//  not sure why we need this, but it breaks even more without it...
 function webform_random_fieldset_save_submit ($form, &$form_state) {
   variable_set('webform_random_fieldset_randomize_'.$form['cid']['#value'], $form_state['values']['random_fieldset']);
 }
@@ -43,6 +43,7 @@ function webform_random_fieldset_save_submit ($form, &$form_state) {
  * Implements hook_form_alter().
  */
 function webform_random_fieldset_form_alter(&$form, &$form_state, $form_id) {
+  // This is where the randomness happens.
   // if its a webform
   if (substr($form_id, 0, 20) == 'webform_client_form_') {
     // for every webform component get the key-value
@@ -53,10 +54,11 @@ function webform_random_fieldset_form_alter(&$form, &$form_state, $form_id) {
         $cid = $form['submitted'][$key]['#webform_component']['cid'];
         // is the webform_random_fieldset checkbox checked
         $checked = variable_get('webform_random_fieldset_randomize_'.$cid);
-        // check if the form component ID
+        // if the random checkbox is checked
         if ($checked) {
+          // go through each element in the fieldset
           foreach ($form['submitted'][$key] as $fieldset_key => $fieldset_value) {
-            // if the $value for the item is an array
+            // check to see if the $value for the item is an array
             if (is_array($fieldset_value)) {
               // change the array element of weight to a random number between -100 and 100
               $form['submitted'][$key][$fieldset_key]['#weight'] = rand(-100, 100);
@@ -67,72 +69,3 @@ function webform_random_fieldset_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 }
-
-
-
-
-
-
-/**
- *
- * GOING IN A DIFFERENT DIRECTION
- *
- *
- * Implements hook_webform_component_info
- */
-// function webform_random_fieldset_webform_component_info() {
-
-//   $component_info = array(
-//     'random_fieldset' => array(
-//       'label' => t('Random Fieldset'),
-//       'description' => t('Random fieldsets allow you to organize multiple fields into randomized groups.'),
-//       'features' => array(
-//         'csv' => FALSE,
-//         'default_value' => FALSE,
-//         'required' => FALSE,
-//         'conditional' => FALSE,
-//         'group' => TRUE,
-//         'title_inline' => FALSE,
-//         'wrapper_classes' => FALSE,
-//       ),
-//       'file' => 'components/random_fieldset.inc',
-//     ),
-//   );
-
-//   return $component_info;
-// }
-
-
-// function webform_random_fieldset_form_webform_configure_form_alter(&$form, &$form_state, $form_id) {
-//   /* Random Settings */
-//   $form['random'] = array(
-//   '#type' => 'checkbox',
-//     '#weight' => '-100',
-//     '#default_value' => variable_get('webform_random_randomize_'.$form['nid']['#value'], 0 ),
-//     '#title' => t('Randomize form elements'),
-//     );
-// //  SOMETHING NOT WORKING CORRECTLY HERE
-// $form['actions']['submit']['#submit'][] = 'webform_random_save_submit';
-
-// }
-
-// function webform_random_save_submit ($form, &$form_state) {
-//   variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
-// }
-
-
-
-//
-// don't use this
-//
-//    function webform_random_form_alter(&$form, &$form_state, $form_id) {
-//   if (substr($form_id, 0, 20) == 'webform_client_form_' ){
-//     $random_fieldset=variable_get('webform_random_fieldset_randomize_'.$form['submitted']['fieldset']['#webform_component']->cid, 0 );
-
-//     foreach ($form['submitted']['fieldset'] as $key => $value) {
-//       if ($random_fieldset) {
-//         $form['submitted']['fieldset'][$key]['#weight'] = rand(-100, 100);
-//       }
-//     }
-//   }
-// }
