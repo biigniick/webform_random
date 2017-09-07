@@ -22,14 +22,13 @@ function webform_random_form_webform_configure_form_alter(&$form, &$form_state, 
     '#title' => t('Randomize top-level form elements'),
     );
 //clicking submit calls a function
-$form['#submit'][] = 'webform_random_form_submit_save';
-
+$form['#submit'][] = '_webform_random_form_submit_save';
 }
 
 /**
  * Implements hook_form_submit().
  */
-function webform_random_form_submit_save ($form, &$form_state) {
+function _webform_random_form_submit_save ($form, &$form_state) {
   // set a variable when saving the form
   variable_set('webform_random_randomize_'.$form['nid']['#value'], $form_state['values']['random']);
 }
